@@ -16,6 +16,26 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@adapters/*": [
+        "src/infrastructure/adapters/*"
+      ],
+      "@plugins/*": [
+        "./src/infrastructure/plugins/*"
+      ],
+      "@ports": [
+        "./src/infrastructure/ports/index.ts"
+      ],
+      "@modules": [
+        "./src/modules/index.ts"
+      ],
+      "@note/domain/*": [
+        "./src/modules/note/core/domain/*"
+      ],
+      "@note/interface/*": [
+        "./src/modules/note/interface/*"
+      ],
+    }
   }
 }
