@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Logger,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -13,7 +14,10 @@ import {
   CreateTagService,
   UpdateTagService,
 } from 'src/modules/tag/core/services/useCases/command';
-import { FindTagService } from 'src/modules/tag/core/services/useCases/queries';
+import {
+  FindOneTagService,
+  FindTagService,
+} from 'src/modules/tag/core/services/useCases/queries';
 
 @Controller('tag')
 export class TagRestController {
@@ -22,6 +26,7 @@ export class TagRestController {
   constructor(
     private readonly createTagService: CreateTagService,
     private readonly findTagService: FindTagService,
+    private readonly findOneTagService: FindOneTagService,
     private readonly updateTagService: UpdateTagService,
   ) {}
 
@@ -35,6 +40,16 @@ export class TagRestController {
   find(): Promise<Tag[]> {
     this.logger.log(`Finding tags`);
     return this.findTagService.execute();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Tag> {
+    this.logger.log(`Finding tag: ${id}`);
+    const tag = await this.findOneTagService.execute(id);
+
+    if (!tag) throw new NotFoundException(`Tag with id: ${id} not found`);
+
+    return tag;
   }
 
   @Put(':id')

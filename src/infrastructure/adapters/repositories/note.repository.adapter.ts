@@ -20,6 +20,11 @@ export class NoteRepositoryAdapter implements NoteRepositoryPort {
     return this.prisma.note.findMany(params);
   }
 
+  findOne(id: string): Promise<Note> {
+    this.logger.log(`Finding note: ${id}`);
+    return this.prisma.note.findUnique({ where: { id } });
+  }
+
   update(id: string, data: UpdateNoteDto): Promise<Note> {
     this.logger.log(`Updating note: ${id} with data: ${JSON.stringify(data)}`);
     return this.prisma.note.update({

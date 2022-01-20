@@ -20,6 +20,11 @@ export class TagRepositoryAdapter implements TagRepositoryPort {
     return this.prisma.tag.findMany(params);
   }
 
+  findOne(id: string): Promise<Tag> {
+    this.logger.log(`Finding tag: ${id}`);
+    return this.prisma.tag.findUnique({ where: { id } });
+  }
+
   update(id: string, data: CreateTagDto): Promise<Tag> {
     this.logger.log(`Updating tag: ${id} with data: ${JSON.stringify(data)}`);
     return this.prisma.tag.update({

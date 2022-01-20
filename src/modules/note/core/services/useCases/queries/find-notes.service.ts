@@ -5,7 +5,7 @@ import { NoteRepositoryPort } from '@ports';
 export class FindNotesService {
   constructor(private readonly noteRepository: NoteRepositoryPort) {}
 
-  find() {
+  execute() {
     return this.noteRepository.find();
   }
 }

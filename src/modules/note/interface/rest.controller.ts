@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Logger,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -12,35 +13,50 @@ import {
   UpdateNoteService,
   CreateNoteService,
 } from 'src/modules/note/core/services/useCases/commands';
-import { FindNotesService } from 'src/modules/note/core/services/useCases/queries';
+import {
+  FindNotesService,
+  FindOneNoteService,
+} from 'src/modules/note/core/services/useCases/queries';
 
 @Controller('note')
 export class NoteRestController {
   private readonly logger = new Logger(NoteRestController.name);
 
   constructor(
-    private readonly findNotes: FindNotesService,
-    private readonly createNote: CreateNoteService,
-    private readonly updateNote: UpdateNoteService,
+    private readonly findNotesService: FindNotesService,
+    private readonly findOneNoteService: FindOneNoteService,
+    private readonly createNoteService: CreateNoteService,
+    private readonly updateNoteService: UpdateNoteService,
   ) {}
 
   @Get()
   find() {
     this.logger.log('Request to find notes');
-    return this.findNotes.find();
+
+    return this.findNotesService.execute();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    this.logger.log(`Request to find note: ${id}`);
+
+    const note = await this.findOneNoteService.execute(id);
+
+    if (!note) throw new NotFoundException(`Note with id: ${id} not found`);
+    return note;
   }
 
   @Post()
   create(@Body() data: CreateNoteDto) {
     this.logger.log('Request to create note');
 
-    return this.createNote.execute(data);
+    return this.createNoteService.execute(data);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() data: UpdateNoteDto) {
     this.logger.log(`Request to update note: ${id}`);
 
-    return this.updateNote.execute(id, data);
+    return this.updateNoteService.execute(id, data);
   }
 }

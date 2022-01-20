@@ -5,7 +5,10 @@ import {
   CreateTagService,
   UpdateTagService,
 } from 'src/modules/tag/core/services/useCases/command';
-import { FindTagService } from 'src/modules/tag/core/services/useCases/queries';
+import {
+  FindOneTagService,
+  FindTagService,
+} from 'src/modules/tag/core/services/useCases/queries';
 
 @Module({
   controllers: [TagRestController],
@@ -13,6 +16,7 @@ import { FindTagService } from 'src/modules/tag/core/services/useCases/queries';
     TagRepositoryProvider,
     CreateTagService,
     FindTagService,
+    FindOneTagService,
     UpdateTagService,
   ],
 })
