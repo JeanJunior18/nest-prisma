@@ -14,7 +14,6 @@ model Note {
   createdAt DateTime @default(now())
 
   NoteTag NoteTag[]
-  @@map("notes")
 }
 
 model Tag {
@@ -23,17 +22,15 @@ model Tag {
   createdAt DateTime @default(now())
 
   NoteTag NoteTag[]
-  @@map("tags")
 }
 
 model NoteTag {
-  id         String   @id @default(cuid())
-  note       Note     @relation(fields: [note_id], references: [id])
-  note_id    String
-  tag        Tag      @relation(fields: [tag_id], references: [id])
-  tag_id     String
-  created_at DateTime @default(now())
+  id        String   @id @default(cuid())
+  note      Note     @relation(fields: [noteId], references: [id])
+  noteId    String
+  tag       Tag      @relation(fields: [tagId], references: [id])
+  tagId     String
+  createdAt DateTime @default(now())
 
-  @@index([note_id, tag_id])
-  @@map("note_tags")
+  @@index([noteId, tagId])
 }

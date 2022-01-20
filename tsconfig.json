@@ -36,6 +36,12 @@
       "@note/interface/*": [
         "./src/modules/note/interface/*"
       ],
+      "@tag/domain/*": [
+        "./src/modules/tag/core/domain/*"
+      ],
+      "@tag/interface/*": [
+        "./src/modules/tag/interface/*"
+      ]
     }
   }
 }

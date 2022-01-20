@@ -8,8 +8,10 @@ import {
   Put,
 } from '@nestjs/common';
 import { CreateNoteDto, UpdateNoteDto } from '@note/interface/dto';
-import { UpdateNoteService } from 'src/modules/note/core/services/useCases/commands';
-import { CreateNoteService } from 'src/modules/note/core/services/useCases/commands/create-note.service';
+import {
+  UpdateNoteService,
+  CreateNoteService,
+} from 'src/modules/note/core/services/useCases/commands';
 import { FindNotesService } from 'src/modules/note/core/services/useCases/queries';
 
 @Controller('note')

@@ -10,9 +10,9 @@ export class NoteRepositoryAdapter implements NoteRepositoryPort {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  create(note: CreateNoteDto): Promise<Note> {
-    this.logger.log(`Creating note: ${JSON.stringify(note)}`);
-    return this.prisma.note.create({ data: note });
+  create(data: CreateNoteDto): Promise<Note> {
+    this.logger.log(`Creating note: ${JSON.stringify(data)}`);
+    return this.prisma.note.create({ data });
   }
 
   find(params = {}): Promise<Note[]> {
