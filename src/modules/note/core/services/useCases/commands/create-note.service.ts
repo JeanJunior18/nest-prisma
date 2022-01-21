@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateNoteDto } from '@note/interface/dto';
-import { NoteRepositoryPort } from '@ports';
+import { NoteRepositoryPort } from '@ports/repository';
 
 @Injectable()
 export class CreateNoteService {

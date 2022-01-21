@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TagRepositoryPort } from '@ports';
+import { TagRepositoryPort } from '@ports/repository';
 import { Tag } from '@tag/domain/model/tag.entity';
 import { CreateTagDto } from '@tag/interface/dto';
 

@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TagRepositoryPort } from '@ports';
+import { TagRepositoryPort } from '@ports/repository';
+import { Pagination } from '@ports/utils';
 import { Tag } from '@tag/domain/model/tag.entity';
+import { QueryParamsTagDto } from '@tag/interface/dto';
 
 @Injectable()
 export class FindTagService {
@@ -8,8 +10,8 @@ export class FindTagService {
 
   constructor(private readonly tagRepository: TagRepositoryPort) {}
 
-  execute(params = {}): Promise<Tag[]> {
-    this.logger.log(`Finding tags with params: ${JSON.stringify(params)}`);
-    return this.tagRepository.find(params);
+  execute(query?: QueryParamsTagDto): Promise<Pagination<Tag>> {
+    this.logger.log(`Finding tags with params: ${JSON.stringify(query)}`);
+    return this.tagRepository.find(query);
   }
 }

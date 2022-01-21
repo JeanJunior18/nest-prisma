@@ -24,8 +24,8 @@
       "@plugins/*": [
         "./src/infrastructure/plugins/*"
       ],
-      "@ports": [
-        "./src/infrastructure/ports/index.ts"
+      "@ports/*": [
+        "./src/infrastructure/ports/*"
       ],
       "@modules": [
         "./src/modules/index.ts"
@@ -33,15 +33,22 @@
       "@note/domain/*": [
         "./src/modules/note/core/domain/*"
       ],
+      "@note/useCases/*": [
+        "./src/modules/note/core/services/useCases/*"
+      ],
       "@note/interface/*": [
         "./src/modules/note/interface/*"
       ],
       "@tag/domain/*": [
         "./src/modules/tag/core/domain/*"
       ],
+      "@tag/useCases/*": [
+        "./src/modules/tag/core/services/useCases/*"
+      ],
       "@tag/interface/*": [
         "./src/modules/tag/interface/*"
       ]
+      
     }
   }
 }

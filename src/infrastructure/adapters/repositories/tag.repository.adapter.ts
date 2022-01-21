@@ -1,8 +1,9 @@
 import { Injectable, Logger, Provider } from '@nestjs/common';
 import { PrismaService } from '@plugins/prisma';
-import { TagRepositoryPort } from '@ports';
+import { TagRepositoryPort } from '@ports/repository';
+import { Pagination } from '@ports/utils';
 import { Tag } from '@tag/domain/model/tag.entity';
-import { CreateTagDto } from '@tag/interface/dto';
+import { CreateTagDto, QueryParamsTagDto } from '@tag/interface/dto';
 
 @Injectable()
 export class TagRepositoryAdapter implements TagRepositoryPort {
@@ -15,9 +16,23 @@ export class TagRepositoryAdapter implements TagRepositoryPort {
     return this.prisma.tag.create({ data });
   }
 
-  find(params = {}): Promise<Tag[]> {
-    this.logger.log(`Finding tags with params: ${JSON.stringify(params)}`);
-    return this.prisma.tag.findMany(params);
+  async find(query?: QueryParamsTagDto): Promise<Pagination<Tag>> {
+    this.logger.log(`Finding tags with params: ${JSON.stringify(query)}`);
+    const limit = +query?.limit || 10;
+    const page = +query?.page || 1;
+    const results = await this.prisma.tag.findMany({
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+    const total = await this.prisma.tag.count();
+
+    return new Pagination<Tag>(
+      total,
+      page,
+      limit,
+      Math.ceil(total / limit),
+      results,
+    );
   }
 
   findOne(id: string): Promise<Tag> {

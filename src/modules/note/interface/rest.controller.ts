@@ -7,16 +7,15 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
-import { CreateNoteDto, UpdateNoteDto } from '@note/interface/dto';
 import {
-  UpdateNoteService,
-  CreateNoteService,
-} from 'src/modules/note/core/services/useCases/commands';
-import {
-  FindNotesService,
-  FindOneNoteService,
-} from 'src/modules/note/core/services/useCases/queries';
+  CreateNoteDto,
+  QueryParamsNoteDto,
+  UpdateNoteDto,
+} from '@note/interface/dto';
+import { CreateNoteService, UpdateNoteService } from '@note/useCases/commands';
+import { FindNotesService, FindOneNoteService } from '@note/useCases/queries';
 
 @Controller('note')
 export class NoteRestController {
@@ -30,10 +29,10 @@ export class NoteRestController {
   ) {}
 
   @Get()
-  find() {
+  find(@Query() query: QueryParamsNoteDto) {
     this.logger.log('Request to find notes');
 
-    return this.findNotesService.execute();
+    return this.findNotesService.execute(query);
   }
 
   @Get(':id')

@@ -1,8 +1,13 @@
 import { Injectable, Logger, Provider } from '@nestjs/common';
 import { Note } from '@note/domain/model/note.entity';
-import { NoteRepositoryPort } from '@ports';
+import { NoteRepositoryPort } from '@ports/repository';
 import { PrismaService } from '@plugins/prisma';
-import { CreateNoteDto, UpdateNoteDto } from '@note/interface/dto';
+import {
+  CreateNoteDto,
+  QueryParamsNoteDto,
+  UpdateNoteDto,
+} from '@note/interface/dto';
+import { Pagination } from '@ports/utils';
 
 @Injectable()
 export class NoteRepositoryAdapter implements NoteRepositoryPort {
@@ -15,9 +20,24 @@ export class NoteRepositoryAdapter implements NoteRepositoryPort {
     return this.prisma.note.create({ data });
   }
 
-  find(params = {}): Promise<Note[]> {
-    this.logger.log(`Finding notes with params: ${JSON.stringify(params)}`);
-    return this.prisma.note.findMany(params);
+  async find(query?: QueryParamsNoteDto): Promise<Pagination<Note>> {
+    this.logger.log(`Finding notes with params: ${JSON.stringify(query)}`);
+
+    const limit = +query?.limit || 10;
+    const page = +query?.page || 1;
+    const results = await this.prisma.note.findMany({
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+    const total = await this.prisma.note.count();
+
+    return new Pagination<Note>(
+      total,
+      page,
+      limit,
+      Math.ceil(total / limit),
+      results,
+    );
   }
 
   findOne(id: string): Promise<Note> {

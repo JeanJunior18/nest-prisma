@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Note } from '@note/domain/model/note.entity';
-import { NoteRepositoryPort } from '@ports';
+import { NoteRepositoryPort } from '@ports/repository';
 
 @Injectable()
 export class FindOneNoteService {

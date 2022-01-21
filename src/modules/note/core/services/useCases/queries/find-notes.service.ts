@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { NoteRepositoryPort } from '@ports';
+import { Note } from '@note/domain/model/note.entity';
+import { QueryParamsNoteDto } from '@note/interface/dto';
+import { NoteRepositoryPort } from '@ports/repository';
+import { Pagination } from '@ports/utils';
 
 @Injectable()
 export class FindNotesService {
   constructor(private readonly noteRepository: NoteRepositoryPort) {}
 
-  execute() {
-    return this.noteRepository.find();
+  execute(query?: QueryParamsNoteDto): Promise<Pagination<Note>> {
+    return this.noteRepository.find(query);
   }
 }

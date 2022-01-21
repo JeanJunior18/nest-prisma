@@ -7,17 +7,17 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
+import { Pagination } from '@ports/utils';
 import { Tag } from '@tag/domain/model/tag.entity';
-import { CreateTagDto, UpdateTagDto } from '@tag/interface/dto';
 import {
-  CreateTagService,
-  UpdateTagService,
-} from 'src/modules/tag/core/services/useCases/command';
-import {
-  FindOneTagService,
-  FindTagService,
-} from 'src/modules/tag/core/services/useCases/queries';
+  CreateTagDto,
+  QueryParamsTagDto,
+  UpdateTagDto,
+} from '@tag/interface/dto';
+import { CreateTagService, UpdateTagService } from '@tag/useCases/command';
+import { FindOneTagService, FindTagService } from '@tag/useCases/queries';
 
 @Controller('tag')
 export class TagRestController {
@@ -37,9 +37,9 @@ export class TagRestController {
   }
 
   @Get()
-  find(): Promise<Tag[]> {
+  find(@Query() query: QueryParamsTagDto): Promise<Pagination<Tag>> {
     this.logger.log(`Finding tags`);
-    return this.findTagService.execute();
+    return this.findTagService.execute(query);
   }
 
   @Get(':id')
