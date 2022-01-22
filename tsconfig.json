@@ -17,6 +17,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "esModuleInterop": true,
     "paths": {
       "@adapters/*": [
         "src/infrastructure/adapters/*"
@@ -47,6 +48,15 @@
       ],
       "@tag/interface/*": [
         "./src/modules/tag/interface/*"
+      ],
+      "@user/domain/*": [
+        "./src/modules/user/core/domain/*"
+      ],
+      "@user/useCases": [
+        "src/modules/user/core/useCases/index.ts"
+      ],
+      "@user/interface/*": [
+        "./src/modules/user/interface/*"
       ]
       
     }
