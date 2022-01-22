@@ -2,7 +2,7 @@ import { Injectable, Logger, Provider } from '@nestjs/common';
 import { PrismaService } from '@plugins/prisma';
 import { TagRepositoryPort } from '@ports/repository';
 import { Pagination } from '@ports/utils';
-import { Tag } from '@tag/domain/model/tag.entity';
+import { Tag } from '@tag/domain/tag.entity';
 import { CreateTagDto, QueryParamsTagDto } from '@tag/interface/dto';
 
 @Injectable()

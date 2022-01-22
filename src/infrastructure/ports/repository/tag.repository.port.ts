@@ -1,5 +1,5 @@
 import { Pagination } from '@ports/utils';
-import { Tag } from '@tag/domain/model/tag.entity';
+import { Tag } from '@tag/domain/tag.entity';
 import { CreateTagDto, UpdateTagDto } from '@tag/interface/dto';
 
 export abstract class TagRepositoryPort {

@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Note } from '@note/domain/model/note.entity';
+import { Note } from '@note/domain/note.entity';
 import { NoteRepositoryPort } from '@ports/repository';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { Note } from '@note/domain/model/note.entity';
+import { Note } from '@note/domain/note.entity';
 import {
   CreateNoteDto,
   QueryParamsNoteDto,

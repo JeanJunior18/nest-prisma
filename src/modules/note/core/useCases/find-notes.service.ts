@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Note } from '@note/domain/model/note.entity';
+import { Note } from '@note/domain/note.entity';
 import { QueryParamsNoteDto } from '@note/interface/dto';
 import { NoteRepositoryPort } from '@ports/repository';
 import { Pagination } from '@ports/utils';

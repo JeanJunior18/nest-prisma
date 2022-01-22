@@ -10,14 +10,18 @@ import {
   Query,
 } from '@nestjs/common';
 import { Pagination } from '@ports/utils';
-import { Tag } from '@tag/domain/model/tag.entity';
+import { Tag } from '@tag/domain/tag.entity';
 import {
   CreateTagDto,
   QueryParamsTagDto,
   UpdateTagDto,
 } from '@tag/interface/dto';
-import { CreateTagService, UpdateTagService } from '@tag/useCases/command';
-import { FindOneTagService, FindTagService } from '@tag/useCases/queries';
+import {
+  CreateTagService,
+  FindOneTagService,
+  FindTagService,
+  UpdateTagService,
+} from '@tag/useCases';
 
 @Controller('tag')
 export class TagRestController {

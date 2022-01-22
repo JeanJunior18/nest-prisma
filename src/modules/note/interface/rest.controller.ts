@@ -14,8 +14,8 @@ import {
   QueryParamsNoteDto,
   UpdateNoteDto,
 } from '@note/interface/dto';
-import { CreateNoteService, UpdateNoteService } from '@note/useCases/commands';
-import { FindNotesService, FindOneNoteService } from '@note/useCases/queries';
+import { CreateNoteService, UpdateNoteService } from '@note/useCases';
+import { FindNotesService, FindOneNoteService } from '@note/useCases';
 
 @Controller('note')
 export class NoteRestController {
