@@ -4,6 +4,7 @@ import { UserRestController } from '@user/interface/rest.controller';
 import {
   CreateUserService,
   DeleteUserService,
+  FindOneUserService,
   UpdateUserService,
 } from '@user/useCases';
 
@@ -14,6 +15,8 @@ import {
     CreateUserService,
     UpdateUserService,
     DeleteUserService,
+    FindOneUserService,
   ],
+  exports: [UserRepositoryProvider, FindOneUserService],
 })
 export class UserModule {}

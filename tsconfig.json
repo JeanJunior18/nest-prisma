@@ -57,8 +57,13 @@
       ],
       "@user/interface/*": [
         "./src/modules/user/interface/*"
-      ]
-      
+      ],
+      "@auth/*": [
+        "src/modules/auth/core/*"
+      ],
+      "@auth/interface/*": [
+        "./src/modules/auth/interface/*"
+      ],
     }
   }
 }

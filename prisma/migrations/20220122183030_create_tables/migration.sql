@@ -46,6 +46,9 @@ CREATE TABLE "User" (
 -- CreateIndex
 CREATE INDEX "NoteTag_noteId_tagId_idx" ON "NoteTag"("noteId", "tagId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
 -- AddForeignKey
 ALTER TABLE "NoteTag" ADD CONSTRAINT "NoteTag_noteId_fkey" FOREIGN KEY ("noteId") REFERENCES "Note"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
