@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from '@auth/guards';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { PrismaService } from '@plugins/prisma';

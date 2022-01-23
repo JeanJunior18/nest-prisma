@@ -1,3 +1,4 @@
+import { JwtStrategy } from '@auth/strategies';
 import {
   Body,
   Controller,
@@ -7,11 +8,18 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
-import { CreateNoteDto, UpdateNoteDto } from '@note/interface/dto';
+import {
+  CreateNoteDto,
+  QueryParamsNoteDto,
+  UpdateNoteDto,
+} from '@note/interface/dto';
 import { CreateNoteService, UpdateNoteService } from '@note/useCases';
 import { FindNotesService, FindOneNoteService } from '@note/useCases';
 
+@UseGuards(JwtStrategy)
 @Controller('note')
 export class NoteRestController {
   private readonly logger = new Logger(NoteRestController.name);
@@ -23,6 +31,15 @@ export class NoteRestController {
     private readonly updateNoteService: UpdateNoteService,
   ) {}
 
+  @UseGuards(JwtStrategy)
+  @Get()
+  async findAll(@Query() query: QueryParamsNoteDto) {
+    this.logger.log('Request to find all notes');
+
+    return this.findNotesService.execute(query);
+  }
+
+  @UseGuards(JwtStrategy)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     this.logger.log(`Request to find note: ${id}`);

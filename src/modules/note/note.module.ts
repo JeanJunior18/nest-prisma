@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common';
 import { NoteRestController } from '@note/interface/rest.controller';
 import { NoteRepositoryProvider } from '@adapters/repositories';
-import { FindNotesService, FindOneNoteService } from '@note/useCases';
-import { CreateNoteService, UpdateNoteService } from '@note/useCases';
+import {
+  FindNotesService,
+  FindOneNoteService,
+  CreateNoteService,
+  UpdateNoteService,
+} from '@note/useCases';
+import {} from '@note/useCases';
 
 @Module({
   controllers: [NoteRestController],
