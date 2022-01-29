@@ -11,6 +11,7 @@ export class UpdateTagService {
 
   execute(id: string, data: UpdateTagDto): Promise<Tag> {
     this.logger.log(`Updating tag: ${id} with data: ${JSON.stringify(data)}`);
+
     return this.tagRepository.update(id, data);
   }
 }

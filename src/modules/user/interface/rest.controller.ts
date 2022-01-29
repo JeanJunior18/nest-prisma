@@ -1,3 +1,4 @@
+import { Public } from '@auth/decorators';
 import {
   Body,
   Controller,
@@ -25,6 +26,7 @@ export class UserRestController {
     private readonly deleteUserService: DeleteUserService,
   ) {}
 
+  @Public()
   @Post()
   create(@Body() data: CreateUserDto): Promise<User> {
     this.logger.log('Creating user');

@@ -1,4 +1,9 @@
-import { Injectable, Logger, Provider } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  Provider,
+} from '@nestjs/common';
 import { PrismaService } from '@plugins/prisma';
 import { TagRepositoryPort } from '@ports/repository';
 import { Pagination } from '@ports/utils';
@@ -18,13 +23,18 @@ export class TagRepositoryAdapter implements TagRepositoryPort {
 
   async find(query?: QueryParamsTagDto): Promise<Pagination<Tag>> {
     this.logger.log(`Finding tags with params: ${JSON.stringify(query)}`);
+
     const limit = +query?.limit || 10;
     const page = +query?.page || 1;
+
+    const params = { userId: query?.userId };
+
+    const total = await this.prisma.tag.count({ where: params });
     const results = await this.prisma.tag.findMany({
       take: limit,
       skip: (page - 1) * limit,
+      where: params,
     });
-    const total = await this.prisma.tag.count();
 
     return new Pagination<Tag>(
       total,
@@ -40,12 +50,17 @@ export class TagRepositoryAdapter implements TagRepositoryPort {
     return this.prisma.tag.findUnique({ where: { id } });
   }
 
-  update(id: string, data: CreateTagDto): Promise<Tag> {
+  async update(id: string, data: CreateTagDto): Promise<Tag> {
     this.logger.log(`Updating tag: ${id} with data: ${JSON.stringify(data)}`);
-    return this.prisma.tag.update({
-      where: { id },
+
+    const updatedNote = await this.prisma.tag.updateMany({
+      where: { id, userId: data.userId },
       data,
     });
+
+    if (!updatedNote) throw new NotFoundException(`Tag not found: ${id}`);
+
+    return this.findOne(id);
   }
 }
 

@@ -35,20 +35,28 @@ export class NoteRestController {
 
   @UseGuards(JwtStrategy)
   @Get()
-  async findAll(@Query() query: QueryParamsNoteDto) {
-    this.logger.log('Request to find all notes');
+  async findAll(
+    @Req() request: RequestWithUser,
+    @Query() query: QueryParamsNoteDto,
+  ) {
+    this.logger.log(`Request to find notes of user: ${request.user.email}`);
 
-    return this.findNotesService.execute(query);
+    const userId = request.user.id;
+
+    return this.findNotesService.execute({ ...query, userId });
   }
 
   @UseGuards(JwtStrategy)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Req() request: RequestWithUser, @Param('id') id: string) {
     this.logger.log(`Request to find note: ${id}`);
+
+    const userId = request.user.id;
 
     const note = await this.findOneNoteService.execute(id);
 
-    if (!note) throw new NotFoundException(`Note with id: ${id} not found`);
+    if (!note || note.userId !== userId)
+      throw new NotFoundException(`Note with id: ${id} not found`);
     return note;
   }
 
@@ -62,9 +70,15 @@ export class NoteRestController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() data: UpdateNoteDto) {
+  update(
+    @Req() request: RequestWithUser,
+    @Param('id') id: string,
+    @Body() data: UpdateNoteDto,
+  ) {
     this.logger.log(`Request to update note: ${id}`);
 
-    return this.updateNoteService.execute(id, data);
+    const userId = request.user.id;
+
+    return this.updateNoteService.execute(id, { ...data, userId });
   }
 }

@@ -49,24 +49,44 @@ export class TagRestController {
   }
 
   @Get()
-  find(@Query() query: QueryParamsTagDto): Promise<Pagination<Tag>> {
+  find(
+    @Req() request: RequestWithUser,
+    @Query() query: QueryParamsTagDto,
+  ): Promise<Pagination<Tag>> {
     this.logger.log(`Finding tags`);
-    return this.findTagService.execute(query);
+
+    const userId = request.user.id;
+
+    return this.findTagService.execute({ ...query, userId });
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Tag> {
+  async findOne(
+    @Req() request: RequestWithUser,
+    @Param('id') id: string,
+  ): Promise<Tag> {
     this.logger.log(`Finding tag: ${id}`);
+
+    const userId = request.user.id;
+
     const tag = await this.findOneTagService.execute(id);
 
-    if (!tag) throw new NotFoundException(`Tag with id: ${id} not found`);
+    if (!tag || tag.userId !== userId)
+      throw new NotFoundException(`Tag with id: ${id} not found`);
 
     return tag;
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() data: UpdateTagDto): Promise<Tag> {
+  update(
+    @Req() request: RequestWithUser,
+    @Param('id') id: string,
+    @Body() data: UpdateTagDto,
+  ): Promise<Tag> {
     this.logger.log(`Updating tag: ${id} with data: ${JSON.stringify(data)}`);
-    return this.updateTagService.execute(id, data);
+
+    const userId = request.user.id;
+
+    return this.updateTagService.execute(id, { ...data, userId });
   }
 }

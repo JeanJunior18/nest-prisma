@@ -1,6 +1,10 @@
-import { IsNumberString, IsOptional } from 'class-validator';
+import { IsNumberString, IsOptional, IsString } from 'class-validator';
 
 export class QueryParamsTagDto {
+  @IsString()
+  @IsOptional()
+  userId: string;
+
   @IsNumberString()
   @IsOptional()
   limit?: number;

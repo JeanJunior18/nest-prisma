@@ -1,4 +1,9 @@
-import { Injectable, Logger, Provider } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  Provider,
+} from '@nestjs/common';
 import { Note } from '@note/domain/note.entity';
 import { NoteRepositoryPort } from '@ports/repository';
 import { PrismaService } from '@plugins/prisma';
@@ -25,11 +30,15 @@ export class NoteRepositoryAdapter implements NoteRepositoryPort {
 
     const limit = +query?.limit || 10;
     const page = +query?.page || 1;
+
+    const params = { userId: query?.userId };
+
+    const total = await this.prisma.note.count({ where: params });
     const results = await this.prisma.note.findMany({
       take: limit,
       skip: (page - 1) * limit,
+      where: params,
     });
-    const total = await this.prisma.note.count();
 
     return new Pagination<Note>(
       total,
@@ -45,12 +54,18 @@ export class NoteRepositoryAdapter implements NoteRepositoryPort {
     return this.prisma.note.findUnique({ where: { id } });
   }
 
-  update(id: string, data: UpdateNoteDto): Promise<Note> {
+  async update(id: string, data: UpdateNoteDto): Promise<Note> {
     this.logger.log(`Updating note: ${id} with data: ${JSON.stringify(data)}`);
-    return this.prisma.note.update({
-      where: { id },
+
+    const updatedNote = await this.prisma.note.updateMany({
+      where: { id, userId: data.userId },
       data,
     });
+
+    if (!updatedNote.count)
+      throw new NotFoundException(`Note not found: ${id}`);
+
+    return this.findOne(id);
   }
 }
 

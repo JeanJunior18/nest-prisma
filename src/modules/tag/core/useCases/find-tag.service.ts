@@ -11,7 +11,11 @@ export class FindTagService {
   constructor(private readonly tagRepository: TagRepositoryPort) {}
 
   execute(query?: QueryParamsTagDto): Promise<Pagination<Tag>> {
-    this.logger.log(`Finding tags with params: ${JSON.stringify(query)}`);
+    this.logger.log(
+      `Finding tags with params: ${JSON.stringify(query)} for user: ${
+        query.userId
+      }`,
+    );
     return this.tagRepository.find(query);
   }
 }
