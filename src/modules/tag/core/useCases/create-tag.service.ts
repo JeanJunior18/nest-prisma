@@ -10,7 +10,10 @@ export class CreateTagService {
   constructor(private readonly tagRepository: TagRepositoryPort) {}
 
   execute(data: CreateTagDto): Promise<Tag> {
-    this.logger.log(`Creating tag: ${JSON.stringify(data)}`);
+    this.logger.log(
+      `Creating tag: ${JSON.stringify(data)} for user: ${data.userId}`,
+    );
+
     return this.tagRepository.create(data);
   }
 }

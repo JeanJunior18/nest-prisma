@@ -11,7 +11,7 @@ export class LoginService {
   execute(user: User) {
     this.logger.log(`User ${user.name} logged in`);
 
-    const payload = { name: user.name, email: user.email, sub: user.id };
+    const payload = { name: user.name, email: user.email, id: user.id };
 
     return {
       accessToken: this.jwtService.sign(payload),

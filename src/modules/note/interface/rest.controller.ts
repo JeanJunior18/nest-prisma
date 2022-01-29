@@ -1,3 +1,4 @@
+import { RequestWithUser } from '@auth/interface/dto';
 import { JwtStrategy } from '@auth/strategies';
 import {
   Body,
@@ -9,6 +10,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -51,10 +53,12 @@ export class NoteRestController {
   }
 
   @Post()
-  create(@Body() data: CreateNoteDto) {
+  create(@Req() request: RequestWithUser, @Body() data: CreateNoteDto) {
     this.logger.log('Request to create note');
 
-    return this.createNoteService.execute(data);
+    const userId = request.user.id;
+
+    return this.createNoteService.execute({ ...data, userId });
   }
 
   @Put(':id')

@@ -9,7 +9,9 @@ export class CreateNoteService {
   constructor(private noteRepository: NoteRepositoryPort) {}
 
   async execute(data: CreateNoteDto) {
-    this.logger.log(`Creating note: ${JSON.stringify(data)}`);
+    this.logger.log(
+      `Creating note: ${JSON.stringify(data)} for user: ${data.userId}`,
+    );
 
     const note = await this.noteRepository.create(data);
 

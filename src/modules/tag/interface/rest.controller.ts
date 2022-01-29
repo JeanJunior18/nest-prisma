@@ -1,3 +1,4 @@
+import { RequestWithUser } from '@auth/interface/dto';
 import {
   Body,
   Controller,
@@ -8,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
 } from '@nestjs/common';
 import { Pagination } from '@ports/utils';
 import { Tag } from '@tag/domain/tag.entity';
@@ -35,9 +37,15 @@ export class TagRestController {
   ) {}
 
   @Post()
-  create(@Body() data: CreateTagDto): Promise<Tag> {
+  create(
+    @Req() request: RequestWithUser,
+    @Body() data: CreateTagDto,
+  ): Promise<Tag> {
     this.logger.log(`Creating tag: ${JSON.stringify(data)}`);
-    return this.createTagService.execute(data);
+
+    const userId = request.user.id;
+
+    return this.createTagService.execute({ ...data, userId });
   }
 
   @Get()
